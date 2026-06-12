@@ -10,16 +10,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@libsql/client": "^0.14.0",
+    "@libsql/client": "^0.17.3",
     "@ts-template/core": "workspace:*",
-    "drizzle-orm": "^0.36.0",
-    "node-cron": "^3.0.3"
+    "drizzle-orm": "^0.45.2",
+    "node-cron": "^4.2.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250115.0",
-    "@types/node": "^22.10.0",
+    "@cloudflare/workers-types": "^4.20260612.1",
+    "@types/node": "^25.9.3",
     "@types/node-cron": "^3.0.11",
     "tsx": "^4.19.0",
-    "typescript": "^5.7.2"
+    "typescript": "^6.0.3"
   }
 }

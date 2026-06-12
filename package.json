@@ -1,0 +1,47 @@
+{
+  "name": "ts-template",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Opinionated TypeScript monorepo template for Hono, Inertia, React, Drizzle, Cloudflare Workers, Node, and PM2.",
+  "scripts": {
+    "dev": "pnpm --filter @ts-template/web dev",
+    "dev:cf": "pnpm --filter @ts-template/web dev:cf",
+    "build": "pnpm --filter @ts-template/web build",
+    "build:cf": "pnpm --filter @ts-template/web build:cf",
+    "serve": "pnpm --filter @ts-template/web serve",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @ts-template/core db:generate",
+    "db:migrate:node": "DATABASE_PATH=\"${DATABASE_PATH:-$PWD/packages/web/data/ts-template.db}\" pnpm --filter @ts-template/web migrate:node",
+    "db:migrate:local": "pnpm --filter @ts-template/web db:migrate:local",
+    "db:migrate:remote": "pnpm --filter @ts-template/web db:migrate:remote",
+    "cron": "pnpm --filter @ts-template/cron start",
+    "queue": "pnpm --filter @ts-template/cron queue",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:reload": "pm2 reload ecosystem.config.cjs --update-env",
+    "pm2:stop": "pm2 stop ecosystem.config.cjs",
+    "pm2:logs": "pm2 logs ts-template-web ts-template-cron ts-template-queue"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.60.0"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
+  }
+}

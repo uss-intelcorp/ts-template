@@ -1,0 +1,42 @@
+name: Template Archive
+
+on:
+  workflow_dispatch:
+    inputs:
+      archive_name:
+        description: Archive artifact name
+        required: false
+        default: ts-template
+
+permissions:
+  contents: read
+
+jobs:
+  archive:
+    name: Build Downloadable Template Archive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create archive
+        run: |
+          mkdir -p /tmp/template-archive
+          rsync -a ./ /tmp/template-archive/ \
+            --exclude '.git' \
+            --exclude 'node_modules' \
+            --exclude '.wrangler' \
+            --exclude 'dist' \
+            --exclude 'packages/*/data' \
+            --exclude '*.db' \
+            --exclude '*.db-*' \
+            --exclude '*.sqlite' \
+            --exclude '*.sqlite-*'
+          tar -C /tmp -czf "${{ inputs.archive_name }}.tar.gz" template-archive
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.archive_name }}
+          path: ${{ inputs.archive_name }}.tar.gz
+          retention-days: 14

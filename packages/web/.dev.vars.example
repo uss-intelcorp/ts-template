@@ -1,0 +1,12 @@
+APP_NAME="TS Template"
+PORT="8790"
+HOST="0.0.0.0"
+DATABASE_PATH="./data/ts-template.db"
+CLIENT_DIR="./dist/node-client"
+HEARTBEAT_CRON="*/5 * * * *"
+QUEUE_NAME="default"
+QUEUE_POLL_MS="1000"
+QUEUE_RESERVATION_SECONDS="60"
+
+DASHBOARD_USER="admin"
+DASHBOARD_PASSWORD="change-me"

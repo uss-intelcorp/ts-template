@@ -1,0 +1,26 @@
+name: Template Change
+description: Request or track a reusable template improvement.
+title: '[template] '
+labels: ['template']
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What reusable pattern should the template gain or change?
+    validations:
+      required: true
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: What should stay app-specific and not be added to the template?
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification
+      description: Which commands or smoke tests should pass?
+      value: |
+        pnpm lint
+        pnpm typecheck
+        pnpm build

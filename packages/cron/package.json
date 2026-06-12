@@ -1,0 +1,25 @@
+{
+  "name": "@ts-template/cron",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=../web/.dev.vars --import tsx src/index.ts",
+    "queue": "node --env-file-if-exists=../web/.dev.vars --import tsx src/queue-worker.ts",
+    "once": "node --env-file-if-exists=../web/.dev.vars --import tsx src/once.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "@ts-template/core": "workspace:*",
+    "drizzle-orm": "^0.36.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250115.0",
+    "@types/node": "^22.10.0",
+    "@types/node-cron": "^3.0.11",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.2"
+  }
+}

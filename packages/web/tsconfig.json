@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["vite/client", "@cloudflare/workers-types", "node"]
+  },
+  "include": ["src", "scripts", "vite.config.ts"]
+}

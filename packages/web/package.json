@@ -1,0 +1,49 @@
+{
+  "name": "@ts-template/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "VITE_TARGET=node vite",
+    "dev:cf": "vite",
+    "build": "tsc --noEmit && VITE_TARGET=node vite build",
+    "build:cf": "tsc --noEmit && vite build",
+    "serve": "node --env-file-if-exists=.dev.vars --import tsx src/node.ts",
+    "migrate:node": "node --env-file-if-exists=.dev.vars --import tsx scripts/migrate.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "deploy:cf": "tsc --noEmit && vite build && wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply ts-template --local --persist-to ../../.wrangler/state",
+    "db:migrate:remote": "wrangler d1 migrations apply ts-template --remote"
+  },
+  "dependencies": {
+    "@hono/inertia": "^0.2.0",
+    "@hono/node-server": "^1.13.0",
+    "@hono/zod-validator": "^0.8.0",
+    "@inertiajs/react": "^2.0.0",
+    "@libsql/client": "^0.14.0",
+    "@ts-template/core": "workspace:*",
+    "drizzle-orm": "^0.36.0",
+    "hono": "^4.7.0",
+    "lucide-react": "^0.460.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.0.0",
+    "@cloudflare/workers-types": "^4.20250115.0",
+    "@hono/vite-dev-server": "^0.26.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.0",
+    "wrangler": "^4.94.0"
+  }
+}

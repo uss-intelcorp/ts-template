@@ -1,6 +1,6 @@
 # ts-template
 
-Local sibling template for the TypeScript application pattern used by `ss-scraper` and `neo-scrapper`.
+Opinionated TypeScript application template for Hono, Inertia, React, Drizzle, Cloudflare Workers, Node, and PM2.
 
 ## Included Patterns
 
@@ -29,7 +29,8 @@ packages/
 
 ## Start A New App From This Template
 
-If this repository is hosted on GitHub, keep it private and enable **Settings -> General -> Template repository**.
+If this repository is hosted on GitHub, enable **Settings -> General -> Template repository** so new apps can be
+created from it directly.
 
 ```bash
 cp -a ../ts-template ../my-new-app
@@ -45,10 +46,11 @@ The dev server runs with Vite and the Hono Node adapter. The production Node ent
 GitHub options:
 
 ```bash
-gh repo create OWNER/my-new-app --private --template OWNER/ts-template
+gh repo create OWNER/my-new-app --public --template SOURCE_OWNER/ts-template
 ```
 
-You can also run the **Template Archive** workflow to download a private `.tar.gz` artifact without cloning the repo directly.
+Use `--private` instead of `--public` when the generated app should be private. You can also run the
+**Template Archive** workflow to download a `.tar.gz` artifact without cloning the repo directly.
 
 ## Commands
 

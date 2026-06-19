@@ -1,6 +1,6 @@
 # Repository Instructions
 
-This is a private TypeScript application template, not a product app.
+This is a reusable TypeScript application template, not a product app.
 
 - Keep changes generic and reusable.
 - Do not add app-specific secrets, production URLs, product names, or domain assumptions.

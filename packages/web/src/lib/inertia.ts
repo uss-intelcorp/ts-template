@@ -1,12 +1,13 @@
 import { serializePage, type RootView } from '@hono/inertia';
 import type { Context } from 'hono';
+import type { User } from '@ts-template/core/user/index';
 import type { Env } from '../server';
 
 export const ASSET_VERSION = '1';
 
 declare module 'hono' {
   interface ContextVariableMap {
-    user: string;
+    user: User.Public;
     flash: Record<string, unknown>;
   }
 }
@@ -31,7 +32,7 @@ export const rootView: RootView = async (page, c: Context) => {
 
 export function sharedProps(c: Context<{ Bindings: Env }>): {
   flash: Record<string, unknown>;
-  auth: { user: string | null };
+  auth: { user: User.Public | null };
   app: { name: string };
 } {
   return {

@@ -1,39 +1,79 @@
-import type { MiddlewareHandler } from 'hono';
+import { AuthSession } from '@ts-template/core/auth/session';
+import type { User } from '@ts-template/core/user/index';
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
+import type { Context, MiddlewareHandler } from 'hono';
 import type { Env } from '../server';
 
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
+const SESSION_COOKIE = 'ts_template_session';
+const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
+
+function isAssetRequest(c: Context): boolean {
+  const { pathname } = new URL(c.req.url);
+  return (
+    pathname.startsWith('/assets/') ||
+    pathname.startsWith('/@') ||
+    pathname.startsWith('/src/') ||
+    pathname === '/favicon.svg' ||
+    pathname === '/vite.svg'
+  );
 }
 
-export const basicAuth: MiddlewareHandler<{ Bindings: Env }> = async (c, next) => {
-  const expectedUser = c.env.DASHBOARD_USER;
-  const expectedPass = c.env.DASHBOARD_PASSWORD;
-  if (!expectedUser || !expectedPass) return c.json({ error: 'Dashboard credentials are not configured.' }, 503);
+function isSecureRequest(c: Context): boolean {
+  return new URL(c.req.url).protocol === 'https:';
+}
 
-  const header = c.req.header('Authorization');
-  if (!header?.startsWith('Basic ')) {
-    return c.text('Authentication required', 401, { 'WWW-Authenticate': 'Basic realm="ts-template"' });
+export const loadAuthenticatedUser: MiddlewareHandler<{ Bindings: Env }> = async (c, next) => {
+  const token = getCookie(c, SESSION_COOKIE);
+  if (token) {
+    try {
+      const user = await AuthSession.findUser(token);
+      if (user) c.set('user', user);
+    } catch {
+      // Ignore malformed/stale cookies; protected routes will still require auth.
+    }
   }
 
-  let decoded: string;
-  try {
-    decoded = atob(header.slice('Basic '.length).trim());
-  } catch {
-    return c.text('Malformed credentials', 400);
-  }
-
-  const sep = decoded.indexOf(':');
-  if (sep === -1) return c.text('Malformed credentials', 400);
-
-  const user = decoded.slice(0, sep);
-  const pass = decoded.slice(sep + 1);
-  if (!timingSafeEqual(user, expectedUser) || !timingSafeEqual(pass, expectedPass)) {
-    return c.text('Invalid credentials', 401, { 'WWW-Authenticate': 'Basic realm="ts-template"' });
-  }
-
-  c.set('user', user);
   await next();
 };
+
+export const requireAuth: MiddlewareHandler<{ Bindings: Env }> = async (c, next) => {
+  if (isAssetRequest(c) || c.get('user')) return next();
+  if (new URL(c.req.url).pathname.startsWith('/api/') && !c.req.header('X-Inertia')) {
+    return c.json({ error: 'Unauthenticated' }, 401);
+  }
+  return c.redirect('/login', 303);
+};
+
+export const redirectIfAuthenticated: MiddlewareHandler<{ Bindings: Env }> = async (c, next) => {
+  if (c.get('user')) return c.redirect('/', 303);
+  await next();
+};
+
+export async function createSessionCookie(c: Context<{ Bindings: Env }>, user: User.Public): Promise<void> {
+  const session = await AuthSession.create({ userId: user.id, ttlSeconds: SESSION_TTL_SECONDS });
+  const expires = new Date(`${session.expiresAt.replace(' ', 'T')}Z`);
+
+  setCookie(c, SESSION_COOKIE, session.token, {
+    httpOnly: true,
+    maxAge: SESSION_TTL_SECONDS,
+    path: '/',
+    sameSite: 'Lax',
+    secure: isSecureRequest(c),
+    expires,
+  });
+
+  c.set('user', user);
+}
+
+export async function clearSessionCookie(c: Context<{ Bindings: Env }>): Promise<void> {
+  const token = getCookie(c, SESSION_COOKIE);
+  if (token) {
+    try {
+      await AuthSession.destroy(token);
+    } catch {
+      // Cookie deletion should still happen even if the DB row is already gone.
+    }
+  }
+
+  deleteCookie(c, SESSION_COOKIE, { path: '/' });
+}

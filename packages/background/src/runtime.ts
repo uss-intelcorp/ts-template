@@ -2,8 +2,9 @@ import { mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
+import type { BackgroundSchedule } from '@ts-template/core/background/schedule';
 import * as schema from '@ts-template/core/db/schema';
-import { Health } from '@ts-template/core/health/index';
+import { SQLiteQueue } from '@ts-template/core/queue/sqlite';
 import type { DB } from '@ts-template/core/util/database';
 import { Database } from '@ts-template/core/util/database';
 
@@ -19,9 +20,7 @@ export async function createRuntime() {
     client,
     db,
     withDatabase: <R>(fn: () => R): R => Database.provide(db as DB, fn),
-    heartbeat: () =>
-      Database.provide(db, async () => {
-        await Health.record({ source: 'cron', message: 'scheduled heartbeat' });
-      }),
+    offer: (offered: BackgroundSchedule.OfferedJob) =>
+      Database.provide(db as DB, () => SQLiteQueue.dispatch({ job: offered.job, options: offered.options })),
   };
 }

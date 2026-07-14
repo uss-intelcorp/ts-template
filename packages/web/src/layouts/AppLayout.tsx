@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 interface SharedProps {
   app: { name: string };
-  auth: { user: string | null };
+  auth: { user: { name: string; email: string } | null };
   [key: string]: unknown;
 }
 
@@ -19,7 +19,26 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <LayoutGrid className="size-5 text-brand-600" />
             {props.app.name}
           </Link>
-          <div className="text-xs text-slate-500">{props.auth.user ? `Session: ${props.auth.user}` : ''}</div>
+          {props.auth.user ? (
+            <div className="flex items-center gap-3 text-xs text-slate-500">
+              <Link
+                href="/settings/profile"
+                className="font-medium text-slate-700 hover:text-brand-700 dark:text-slate-300"
+              >
+                {props.auth.user.name}
+              </Link>
+              <span>{props.auth.user.email}</span>
+              <form method="post" action="/logout">
+                <button type="submit" className="font-medium text-slate-700 hover:text-brand-700 dark:text-slate-300">
+                  Log out
+                </button>
+              </form>
+            </div>
+          ) : (
+            <Link href="/login" className="text-xs font-medium text-slate-700 hover:text-brand-700 dark:text-slate-300">
+              Log in
+            </Link>
+          )}
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>

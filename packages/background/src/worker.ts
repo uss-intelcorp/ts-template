@@ -10,7 +10,7 @@ const runtime = await createRuntime();
 let stopping = false;
 
 function shutdown(signal: string): void {
-  console.log(`received ${signal}; stopping queue worker`);
+  console.log(`received ${signal}; stopping worker`);
   stopping = true;
 }
 
@@ -31,16 +31,16 @@ async function tick(): Promise<void> {
   );
 
   if (result.status === 'empty') await sleep(QUEUE_POLL_MS);
-  else console.log('queue worker', result);
+  else console.log('worker', result);
 }
 
-console.log(`ts-template queue worker started: "${QUEUE_NAME}" (db: ${runtime.databasePath})`);
+console.log(`ts-template worker started: "${QUEUE_NAME}" (db: ${runtime.databasePath})`);
 
 while (!stopping) {
   try {
     await tick();
   } catch (err) {
-    console.error('queue worker tick failed', err);
+    console.error('worker tick failed', err);
     await sleep(QUEUE_POLL_MS);
   }
 }

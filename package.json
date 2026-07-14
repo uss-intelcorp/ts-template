@@ -10,6 +10,8 @@
     "build": "pnpm --filter @ts-template/web build",
     "build:cf": "pnpm --filter @ts-template/web build:cf",
     "serve": "pnpm --filter @ts-template/web serve",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
@@ -19,12 +21,13 @@
     "db:migrate:node": "DATABASE_PATH=\"${DATABASE_PATH:-$PWD/packages/web/data/ts-template.db}\" pnpm --filter @ts-template/web migrate:node",
     "db:migrate:local": "pnpm --filter @ts-template/web db:migrate:local",
     "db:migrate:remote": "pnpm --filter @ts-template/web db:migrate:remote",
-    "cron": "pnpm --filter @ts-template/cron start",
-    "queue": "pnpm --filter @ts-template/cron queue",
+    "scheduler": "pnpm --filter @ts-template/background scheduler",
+    "worker": "pnpm --filter @ts-template/background worker",
+    "offer": "pnpm --filter @ts-template/background once",
     "pm2:start": "pm2 start ecosystem.config.cjs",
     "pm2:reload": "pm2 reload ecosystem.config.cjs --update-env",
     "pm2:stop": "pm2 stop ecosystem.config.cjs",
-    "pm2:logs": "pm2 logs ts-template-web ts-template-cron ts-template-queue"
+    "pm2:logs": "pm2 logs ts-template-web ts-template-scheduler ts-template-worker"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -35,13 +38,18 @@
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.60.0"
+    "typescript-eslint": "^8.60.0",
+    "vitest": "^4.1.9"
   },
   "engines": {
     "node": ">=20",
     "pnpm": ">=9"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp", "workerd"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ]
   }
 }

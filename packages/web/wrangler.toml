@@ -27,5 +27,8 @@ queue = "ts-template-jobs"
 max_batch_size = 10
 max_batch_timeout = 5
 
+[triggers]
+crons = ["*/5 * * * *"]
+
 [observability]
 enabled = true

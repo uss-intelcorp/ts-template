@@ -76,8 +76,8 @@ importers:
         specifier: ^0.36.0
         version: 0.36.4(@cloudflare/workers-types@4.20260607.1)(@libsql/client@0.14.0)(@types/react@19.2.17)(react@19.2.7)
       zod:
-        specifier: ^3.24.0
-        version: 3.25.76
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20250115.0
@@ -102,7 +102,7 @@ importers:
         version: 1.19.14(hono@4.12.23)
       '@hono/zod-validator':
         specifier: ^0.8.0
-        version: 0.8.0(hono@4.12.23)(zod@3.25.76)
+        version: 0.8.0(hono@4.12.23)(zod@4.4.3)
       '@inertiajs/react':
         specifier: ^2.0.0
         version: 2.3.25(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -128,8 +128,8 @@ importers:
         specifier: ^19.0.0
         version: 19.2.7(react@19.2.7)
       zod:
-        specifier: ^3.24.0
-        version: 3.25.76
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@cloudflare/vite-plugin':
         specifier: ^1.0.0
@@ -2932,8 +2932,8 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+  zod@4.4.3:
+    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
 snapshots:
 
@@ -3530,10 +3530,10 @@ snapshots:
       miniflare: 4.20260603.0
       wrangler: 4.98.0(@cloudflare/workers-types@4.20260607.1)
 
-  '@hono/zod-validator@0.8.0(hono@4.12.23)(zod@3.25.76)':
+  '@hono/zod-validator@0.8.0(hono@4.12.23)(zod@4.4.3)':
     dependencies:
       hono: 4.12.23
-      zod: 3.25.76
+      zod: 4.4.3
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -4430,8 +4430,8 @@ snapshots:
       '@babel/parser': 7.29.7
       eslint: 10.4.1(jiti@2.7.0)
       hermes-parser: 0.25.1
-      zod: 3.25.76
-      zod-validation-error: 4.0.2(zod@3.25.76)
+      zod: 4.4.3
+      zod-validation-error: 4.0.2(zod@4.4.3)
     transitivePeerDependencies:
       - supports-color
 
@@ -5157,8 +5157,8 @@ snapshots:
       cookie: 1.1.1
       youch-core: 0.3.3
 
-  zod-validation-error@4.0.2(zod@3.25.76):
+  zod-validation-error@4.0.2(zod@4.4.3):
     dependencies:
-      zod: 3.25.76
+      zod: 4.4.3
 
-  zod@3.25.76: {}
+  zod@4.4.3: {}

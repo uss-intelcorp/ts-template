@@ -11,7 +11,8 @@ createInertiaApp({
   resolve: async (name) => {
     const importer = pages[`./pages/${name}.tsx`];
     if (!importer) throw new Error(`Unknown Inertia page: ${name}`);
-    return importer();
+    const mod = await importer();
+    return mod.default;
   },
   setup({ el, App, props }) {
     const tree = (

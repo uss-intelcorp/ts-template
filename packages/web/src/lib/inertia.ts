@@ -12,22 +12,14 @@ declare module 'hono' {
   }
 }
 
-function escapeHtmlAttr(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 export const rootView: RootView = async (page, c: Context) => {
   const env = c.env as Env;
   const shellReq = new Request(new URL('/index.html', c.req.url).toString(), { headers: { Accept: 'text/html' } });
   const shellResp = await env.ASSETS.fetch(shellReq);
   if (!shellResp.ok) return `Failed to load app shell (${shellResp.status}).`;
   const html = await shellResp.text();
-  return html.replace('data-page="__INERTIA_PAGE__"', `data-page="${escapeHtmlAttr(serializePage(page))}"`);
+  const json = serializePage(page).replace(/</g, '\\u003c');
+  return html.replace('__INERTIA_PAGE__', () => json);
 };
 
 export function sharedProps(c: Context<{ Bindings: Env }>): {

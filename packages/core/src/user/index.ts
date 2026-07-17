@@ -8,8 +8,7 @@ import { users, type UserRow } from './user.sql';
 const Email = z
   .string()
   .trim()
-  .email()
-  .max(255)
+  .pipe(z.email().max(255))
   .transform((email) => email.toLowerCase());
 const Name = z.string().trim().min(1).max(120);
 

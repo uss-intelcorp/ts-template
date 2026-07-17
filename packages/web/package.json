@@ -20,7 +20,7 @@
     "@hono/inertia": "^0.7.0",
     "@hono/node-server": "^1.13.0",
     "@hono/zod-validator": "^0.8.0",
-    "@inertiajs/react": "^2.0.0",
+    "@inertiajs/react": "^3.6.1",
     "@libsql/client": "^0.14.0",
     "@ts-template/core": "workspace:*",
     "drizzle-orm": "^0.36.0",

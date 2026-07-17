@@ -17,7 +17,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply ts-template --remote"
   },
   "dependencies": {
-    "@hono/inertia": "^0.2.0",
+    "@hono/inertia": "^0.7.0",
     "@hono/node-server": "^1.13.0",
     "@hono/zod-validator": "^0.8.0",
     "@inertiajs/react": "^2.0.0",

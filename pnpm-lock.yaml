@@ -95,8 +95,8 @@ importers:
   packages/web:
     dependencies:
       '@hono/inertia':
-        specifier: ^0.2.0
-        version: 0.2.0(hono@4.12.23)(vite@6.4.3(@types/node@22.19.20)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.22.4))
+        specifier: ^0.7.0
+        version: 0.7.0(hono@4.12.23)(vite@6.4.3(@types/node@22.19.20)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.22.4))
       '@hono/node-server':
         specifier: ^1.13.0
         version: 1.19.14(hono@4.12.23)
@@ -1107,8 +1107,8 @@ packages:
     resolution: {integrity: sha512-+CNAzxglkrpNf/kKywqQfk74QjtceuOE7Qm+AF8miRvPF/wmmK5+OJOgVh3AVTT3RP2mH3+FOaxlE5v72owk0A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  '@hono/inertia@0.2.0':
-    resolution: {integrity: sha512-pqwHs/lHQYlUPRxOx3OWwx6XKAQ4xKMcYWhB/fEg8Pef5gR+qO7jJkDnnR1bqsJa2Z0xP8Es4xjhZk1/gz2ZEA==}
+  '@hono/inertia@0.7.0':
+    resolution: {integrity: sha512-gt8ozy+MDDOLJRwev9N4d91AoYC729V/QSf7MEtZpc8pXHDHG30G2onm0vFMwA3heO5DAlPmnRSYDR1JqXBPaw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       hono: '>=4.0.0'
@@ -3511,7 +3511,7 @@ snapshots:
       '@eslint/core': 1.2.1
       levn: 0.4.1
 
-  '@hono/inertia@0.2.0(hono@4.12.23)(vite@6.4.3(@types/node@22.19.20)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.22.4))':
+  '@hono/inertia@0.7.0(hono@4.12.23)(vite@6.4.3(@types/node@22.19.20)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.22.4))':
     dependencies:
       hono: 4.12.23
     optionalDependencies:

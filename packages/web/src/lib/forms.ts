@@ -1,18 +1,26 @@
-import type { ZodError } from 'zod';
+import { z, type ZodError } from 'zod';
 
 export type FormErrors<T extends string> = Partial<Record<T | 'form', string>>;
 
-export function field(body: Record<string, unknown>, key: string): string {
-  const value = body[key];
-  if (Array.isArray(value)) return typeof value[0] === 'string' ? value[0] : '';
-  return typeof value === 'string' ? value : '';
+type FormBody = Record<string, string | File | (string | File)[]>;
+
+interface ValidationErrors {
+  [key: string]: string;
 }
 
-export function validationErrors<T extends string>(error: ZodError): FormErrors<T> {
-  const errors: FormErrors<T> = {};
+const FieldValue = z.union([z.string(), z.array(z.string())]);
+
+export function field(body: FormBody, key: string): string {
+  const value = FieldValue.safeParse(body[key]);
+  if (!value.success) return '';
+  return Array.isArray(value.data) ? (value.data[0] ?? '') : value.data;
+}
+
+export function validationErrors(error: ZodError) {
+  const errors: ValidationErrors = {};
   for (const issue of error.issues) {
-    const key = issue.path[0];
-    if (typeof key === 'string' && !(key in errors)) errors[key as T] = issue.message;
+    const key = z.string().safeParse(issue.path[0]);
+    if (key.success && !(key.data in errors)) errors[key.data] = issue.message;
   }
   return errors;
 }

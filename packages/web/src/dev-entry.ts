@@ -6,6 +6,7 @@ import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import type { ViteDevServer } from 'vite';
 import * as schema from '@ts-template/core/db/schema';
+import type { DB } from '@ts-template/core/util/database';
 import app, { type AssetServer, type Env } from './server';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -18,7 +19,7 @@ try {
 
 const DATABASE_PATH = resolve(process.env.DATABASE_PATH ?? './data/ts-template.db');
 mkdirSync(dirname(DATABASE_PATH), { recursive: true });
-const db = drizzle(createClient({ url: `file:${DATABASE_PATH}` }), { schema });
+const db: DB = drizzle(createClient({ url: `file:${DATABASE_PATH}` }), { schema });
 
 function viteShell(vite: ViteDevServer): AssetServer {
   return {
@@ -33,7 +34,7 @@ function viteShell(vite: ViteDevServer): AssetServer {
 
 export default {
   fetch(request: Request, platformEnv: { vite: ViteDevServer }): Response | Promise<Response> {
-    const env = { ...process.env, ...platformEnv, DB: db, ASSETS: viteShell(platformEnv.vite) } as unknown as Env;
+    const env: Env = { DB: db, ASSETS: viteShell(platformEnv.vite), APP_NAME: process.env.APP_NAME };
     return app.fetch(request, env);
   },
 };

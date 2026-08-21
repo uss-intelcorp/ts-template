@@ -7,7 +7,7 @@ const pages = import.meta.glob<{ default: React.ComponentType }>('./pages/**/*.t
   eager: false,
 });
 
-createInertiaApp({
+void createInertiaApp({
   resolve: async (name) => {
     const importer = pages[`./pages/${name}.tsx`];
     if (!importer) throw new Error(`Unknown Inertia page: ${name}`);
@@ -24,4 +24,4 @@ createInertiaApp({
     else createRoot(el).render(tree);
   },
   progress: { color: '#0ea5e9', showSpinner: false },
-});
+}).catch((cause: unknown) => console.error('Failed to start Inertia app:', cause));

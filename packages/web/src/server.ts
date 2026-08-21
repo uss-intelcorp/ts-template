@@ -33,7 +33,8 @@ const app = new Hono<{ Bindings: Env }>()
   .route('/', settingsRoute)
   .route('/api', healthRoute)
   .get('/', async (c) => {
-    const [status, recentChecks] = await Promise.all([Health.status(), Health.recent(20)]);
+    const status = Health.status();
+    const recentChecks = await Health.recent(20);
     return c.render('Dashboard', { ...sharedProps(c), status, recentChecks });
   })
   .all('*', async (c) => c.env.ASSETS.fetch(c.req.raw));

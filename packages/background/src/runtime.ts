@@ -13,14 +13,14 @@ const DATABASE_PATH = resolve(process.env.DATABASE_PATH ?? '../web/data/ts-templ
 export async function createRuntime() {
   await mkdir(dirname(DATABASE_PATH), { recursive: true });
   const client = createClient({ url: `file:${DATABASE_PATH}` });
-  const db = drizzle(client, { schema });
+  const db: DB = drizzle(client, { schema });
 
   return {
     databasePath: DATABASE_PATH,
     client,
     db,
-    withDatabase: <R>(fn: () => R): R => Database.provide(db as DB, fn),
+    withDatabase: <R>(fn: () => R): R => Database.provide(db, fn),
     offer: (offered: BackgroundSchedule.OfferedJob) =>
-      Database.provide(db as DB, () => SQLiteQueue.dispatch({ job: offered.job, options: offered.options })),
+      Database.provide(db, () => SQLiteQueue.dispatch({ job: offered.job, options: offered.options })),
   };
 }

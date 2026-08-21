@@ -55,7 +55,8 @@ export namespace SQLiteQueue {
             attempts: sql`${queueJobs.attempts} + 1`,
             updatedAt: sql`(datetime('now'))`,
           })
-          .where(sql`${queueJobs.id} = (
+          .where(
+            sql`${queueJobs.id} = (
               SELECT id FROM ${queueJobs}
               WHERE ${queueJobs.queue} = ${queue}
                 AND ${queueJobs.availableAt} <= datetime('now')
@@ -66,7 +67,8 @@ export namespace SQLiteQueue {
                 )
               ORDER BY ${queueJobs.availableAt} ASC, id ASC
               LIMIT 1
-            )`)
+            )`,
+          )
           .returning();
 
         return rows[0] ?? null;
@@ -138,7 +140,7 @@ export namespace SQLiteQueue {
       await complete({ id: row.id });
       return { status: 'completed', id: row.id, type: row.type };
     } catch (err) {
-      const error = (err as Error).message;
+      const error = err instanceof Error ? err.message : 'Unknown queue handler failure';
       if (row.attempts >= row.maxAttempts) {
         await fail({ row, error });
         return { status: 'failed', id: row.id, type: row.type, error };

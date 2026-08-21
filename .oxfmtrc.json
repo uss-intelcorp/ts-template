@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "sortPackageJson": false,
+  "sortTailwindcss": {
+    "stylesheet": "./packages/web/src/styles/index.css"
+  },
+  "ignorePatterns": ["packages/web/src/pages.gen.ts", "tools/oxlint/anti-slop/**"]
+}

@@ -44,7 +44,7 @@ describe('field', () => {
 
   it('returns an empty string for missing or non-string values', () => {
     expect(field({}, 'name')).toBe('');
-    expect(field({ count: 3 }, 'count')).toBe('');
-    expect(field({ tags: [7] }, 'tags')).toBe('');
+    expect(field({ attachment: new File([], 'avatar.png') }, 'attachment')).toBe('');
+    expect(field({ attachments: [new File([], 'avatar.png')] }, 'attachments')).toBe('');
   });
 });

@@ -5,6 +5,7 @@ import { serve } from '@hono/node-server';
 import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import * as schema from '@ts-template/core/db/schema';
+import type { DB } from '@ts-template/core/util/database';
 import app, { type AssetServer, type Env } from './server';
 import './pages.gen';
 
@@ -16,29 +17,29 @@ const CLIENT_DIR = resolve(process.env.CLIENT_DIR ?? join(__dirname, '../dist/no
 
 await mkdir(dirname(DATABASE_PATH), { recursive: true });
 const client = createClient({ url: `file:${DATABASE_PATH}` });
-const db = drizzle(client, { schema });
+const db: DB = drizzle(client, { schema });
 
-const CONTENT_TYPES: Record<string, string> = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.mjs': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.ico': 'image/x-icon',
-  '.woff2': 'font/woff2',
-  '.woff': 'font/woff',
-  '.txt': 'text/plain; charset=utf-8',
-  '.map': 'application/json; charset=utf-8',
-};
+const CONTENT_TYPES = new Map([
+  ['.html', 'text/html; charset=utf-8'],
+  ['.js', 'text/javascript; charset=utf-8'],
+  ['.mjs', 'text/javascript; charset=utf-8'],
+  ['.css', 'text/css; charset=utf-8'],
+  ['.json', 'application/json; charset=utf-8'],
+  ['.svg', 'image/svg+xml'],
+  ['.png', 'image/png'],
+  ['.jpg', 'image/jpeg'],
+  ['.jpeg', 'image/jpeg'],
+  ['.webp', 'image/webp'],
+  ['.ico', 'image/x-icon'],
+  ['.woff2', 'font/woff2'],
+  ['.woff', 'font/woff'],
+  ['.txt', 'text/plain; charset=utf-8'],
+  ['.map', 'application/json; charset=utf-8'],
+]);
 
 function contentType(path: string): string {
   const dot = path.lastIndexOf('.');
-  return (dot >= 0 && CONTENT_TYPES[path.slice(dot).toLowerCase()]) || 'application/octet-stream';
+  return (dot >= 0 && CONTENT_TYPES.get(path.slice(dot).toLowerCase())) || 'application/octet-stream';
 }
 
 function createDiskAssets(clientDir: string): AssetServer {
@@ -77,7 +78,7 @@ function createDiskAssets(clientDir: string): AssetServer {
   };
 }
 
-const env = { ...process.env, DB: db, ASSETS: createDiskAssets(CLIENT_DIR) } as unknown as Env;
+const env: Env = { DB: db, ASSETS: createDiskAssets(CLIENT_DIR), APP_NAME: process.env.APP_NAME };
 
 serve({ fetch: (request: Request) => app.fetch(request, env), port: PORT, hostname: HOSTNAME }, (info) => {
   console.log(`ts-template listening on http://${HOSTNAME}:${info.port} (db: ${DATABASE_PATH})`);

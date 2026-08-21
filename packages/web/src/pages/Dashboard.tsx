@@ -37,7 +37,7 @@ export default function Dashboard({ status, recentChecks }: PageProps<'Dashboard
             <button
               type="button"
               onClick={() => router.post('/api/health-checks/queued', { source: 'queue', message: 'queued check' })}
-              className="rounded-md border border-brand-200 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-900 dark:bg-brand-950 dark:text-brand-200"
+              className="dark:bg-brand-950 rounded-md border border-brand-200 bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-900 dark:text-brand-200"
             >
               Queue Check
             </button>

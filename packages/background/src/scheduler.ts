@@ -25,12 +25,12 @@ console.log(
   `ts-template scheduler started: ${tasks.map((task) => `${task.name}="${task.cron}"`).join(', ')} (db: ${runtime.databasePath})`,
 );
 
-function shutdown(signal: string): void {
+async function shutdown(signal: string): Promise<void> {
   console.log(`received ${signal}; stopping scheduler`);
-  for (const { task } of tasks) task.stop();
+  for (const { task } of tasks) await task.stop();
   runtime.client.close();
   process.exit(0);
 }
 
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+process.on('SIGINT', () => void shutdown('SIGINT'));
+process.on('SIGTERM', () => void shutdown('SIGTERM'));

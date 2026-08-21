@@ -1,12 +1,12 @@
 import { QueueJob, type QueueJob as QueueJobType } from './job';
 
 export namespace CloudflareQueue {
-  export interface Producer {
-    send(message: QueueJobType, options?: { delaySeconds?: number }): Promise<unknown>;
+  export interface Producer<Result = void> {
+    send(message: QueueJobType, options?: { delaySeconds?: number }): Promise<Result>;
   }
 
-  export async function dispatch(
-    producer: Producer,
+  export async function dispatch<Result>(
+    producer: Producer<Result>,
     job: QueueJobType,
     options: QueueJob.DispatchOptions = {},
   ): Promise<void> {

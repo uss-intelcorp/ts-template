@@ -3,7 +3,8 @@ import { Database, type DB } from './database';
 
 describe('Database', () => {
   it('provides the active database context', () => {
-    const db = { marker: 'db' } as unknown as DB;
+    // SAFETY: This test only verifies context identity and never invokes database methods.
+    const db = {} as DB;
 
     const result = Database.provide(db, () => Database.use((current) => current));
 

@@ -8,12 +8,16 @@ export const ASSET_VERSION = '1';
 declare module 'hono' {
   interface ContextVariableMap {
     user: User.Public;
-    flash: Record<string, unknown>;
   }
 }
 
+export interface SharedProps {
+  auth: { user: User.Public | null };
+  app: { name: string };
+}
+
 export const rootView: RootView = async (page, c: Context) => {
-  const env = c.env as Env;
+  const env: Env = c.env;
   const shellReq = new Request(new URL('/index.html', c.req.url).toString(), { headers: { Accept: 'text/html' } });
   const shellResp = await env.ASSETS.fetch(shellReq);
   if (!shellResp.ok) return `Failed to load app shell (${shellResp.status}).`;
@@ -22,13 +26,8 @@ export const rootView: RootView = async (page, c: Context) => {
   return html.replace('__INERTIA_PAGE__', () => json);
 };
 
-export function sharedProps(c: Context<{ Bindings: Env }>): {
-  flash: Record<string, unknown>;
-  auth: { user: User.Public | null };
-  app: { name: string };
-} {
+export function sharedProps(c: Context<{ Bindings: Env }>): SharedProps {
   return {
-    flash: c.get('flash') ?? {},
     auth: { user: c.get('user') ?? null },
     app: { name: c.env.APP_NAME ?? 'TS Template' },
   };

@@ -9,6 +9,10 @@ describe('QueueJob', () => {
     });
   });
 
+  it('rejects unsupported job types', () => {
+    expect(() => QueueJob.Job.parse({ type: 'unknown', payload: {} })).toThrow();
+  });
+
   it('parses dispatch options with defaults', () => {
     expect(QueueJob.DispatchOptions.parse({})).toEqual({
       queue: 'default',

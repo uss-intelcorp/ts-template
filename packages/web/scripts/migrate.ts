@@ -2,6 +2,7 @@ import { mkdir, readdir, readFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createClient } from '@libsql/client';
+import { z } from 'zod';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATABASE_PATH = resolve(process.env.DATABASE_PATH ?? './data/ts-template.db');
@@ -19,7 +20,7 @@ await client.execute(
 
 const files = (await readdir(MIGRATIONS_DIR)).filter((file) => file.endsWith('.sql')).sort();
 const appliedRes = await client.execute('SELECT name FROM applied_migrations');
-const applied = new Set(appliedRes.rows.map((row) => String(row.name)));
+const applied = new Set(appliedRes.rows.map((row) => z.string().parse(row.name)));
 
 let count = 0;
 for (const file of files) {

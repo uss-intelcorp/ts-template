@@ -1,11 +1,11 @@
+import type { PageProps } from '@inertiajs/core';
 import { Link, usePage } from '@inertiajs/react';
 import { LayoutGrid } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-interface SharedProps {
+interface SharedProps extends PageProps {
   app: { name: string };
   auth: { user: { name: string; email: string } | null };
-  [key: string]: unknown;
 }
 
 export function AppLayout({ children }: { children: ReactNode }) {

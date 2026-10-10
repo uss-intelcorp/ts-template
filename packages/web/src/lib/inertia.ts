@@ -26,7 +26,7 @@ export const rootView: RootView = async (page, c: Context) => {
   return html.replace('__INERTIA_PAGE__', () => json);
 };
 
-export function sharedProps(c: Context<{ Bindings: Env }>): SharedProps {
+export function sharedProps<E extends { Bindings: Env }>(c: Context<E>): SharedProps {
   return {
     auth: { user: c.get('user') ?? null },
     app: { name: c.env.APP_NAME ?? 'TS Template' },

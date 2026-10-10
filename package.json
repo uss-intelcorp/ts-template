@@ -30,12 +30,12 @@
     "pm2:logs": "pm2 logs ts-template-web ts-template-scheduler ts-template-worker"
   },
   "devDependencies": {
-    "@oxlint/plugins": "1.79.0",
-    "oxfmt": "^0.64.0",
-    "oxlint": "^1.79.0",
-    "oxlint-tsgolint": "^7.0.2001",
+    "@oxlint/plugins": "1.87.0",
+    "oxfmt": "^0.72.0",
+    "oxlint": "^1.87.0",
+    "oxlint-tsgolint": "^7.0.2003",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.3"
   },
   "engines": {
     "node": ">=24.19.0",
